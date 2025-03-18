@@ -12,3 +12,55 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  ADMIN
+  OWNER
+  USER
+}
+
+enum Status {
+  CONFIRMED
+  PENDING
+  CANCELLED
+}
+
+model User {
+  id       String     @id @default(uuid())
+  name     String
+  email    String     @unique
+  password String
+  role     Role       @default(USER)
+  createAt DateTime   @default(now())
+  House    House[]
+  Schedule Schedule[]
+
+  @@map("users")
+}
+
+model House {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  price       String
+  address     String
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [id])
+  Schedule    Schedule[]
+
+  @@map("houses")
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  startTime DateTime
+  endTime   DateTime
+  status    Status   @default(PENDING)
+
+  userId  String
+  houseId String
+  user    User   @relation(fields: [userId], references: [id])
+  house   House  @relation(fields: [houseId], references: [id])
+
+  @@map("schedules")
+}
