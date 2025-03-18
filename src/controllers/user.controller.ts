@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import {
-  createUserData,
-  updateUserData,
-  userLoginData,
+  CreateUserData,
+  UserLoginData,
   UserService,
 } from "../services/user.service";
 
@@ -31,7 +30,7 @@ export class UserController {
 
   static async register(req: Request, res: Response) {
     try {
-      const userData: createUserData = req.body;
+      const userData: CreateUserData = req.body;
       const user = await UserService.createUser(userData);
 
       res
@@ -44,7 +43,7 @@ export class UserController {
 
   static async login(req: Request, res: Response) {
     try {
-      const userData: userLoginData = req.body;
+      const userData: UserLoginData = req.body;
       const token = await UserService.userLogin(userData);
 
       res.status(200).json({ message: "Login Successfully!", token });

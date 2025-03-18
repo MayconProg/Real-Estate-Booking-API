@@ -3,19 +3,19 @@ import { prisma } from "../lib/prisma";
 import { Role } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
-export interface createUserData {
+export interface CreateUserData {
   name: string;
   email: string;
   password: string;
   role: Role;
 }
 
-export interface userLoginData {
+export interface UserLoginData {
   email: string;
   password: string;
 }
 
-export interface updateUserData {
+export interface UpdateUserData {
   currentPassword: string;
   newPassword: string;
 }
@@ -40,7 +40,7 @@ export class UserService {
     return user;
   }
 
-  static async createUser(data: createUserData) {
+  static async createUser(data: CreateUserData) {
     const { name, email, password, role } = data;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -57,7 +57,7 @@ export class UserService {
     return user;
   }
 
-  static async userLogin(data: userLoginData) {
+  static async userLogin(data: UserLoginData) {
     const { email, password } = data;
 
     const user = await prisma.user.findUnique({
@@ -85,7 +85,7 @@ export class UserService {
     return token;
   }
 
-  static async updateUser(data: updateUserData, auth?: AuthInterface) {
+  static async updateUser(data: UpdateUserData, auth?: AuthInterface) {
     const userId = auth?.userId;
     const { currentPassword, newPassword } = data;
 
