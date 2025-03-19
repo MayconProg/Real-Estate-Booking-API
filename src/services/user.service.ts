@@ -20,11 +20,6 @@ export interface UpdateUserData {
   newPassword: string;
 }
 
-export interface AuthInterface {
-  userId: string;
-  role: Role;
-}
-
 export class UserService {
   static async getAllUsers() {
     const users = await prisma.user.findMany();
@@ -36,6 +31,10 @@ export class UserService {
     const user = await prisma.user.findUnique({
       where: { id },
     });
+
+    if (!user) {
+      throw new Error("User Not Found!");
+    }
 
     return user;
   }
@@ -85,8 +84,7 @@ export class UserService {
     return token;
   }
 
-  static async updateUser(data: UpdateUserData, auth?: AuthInterface) {
-    const userId = auth?.userId;
+  static async updateUser(data: UpdateUserData, userId?: string) {
     const { currentPassword, newPassword } = data;
 
     const user = await prisma.user.findUnique({
@@ -114,9 +112,7 @@ export class UserService {
     });
   }
 
-  static async deleteUser(auth?: AuthInterface) {
-    const userId = auth?.userId;
-
+  static async deleteUser(userId?: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });

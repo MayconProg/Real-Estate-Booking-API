@@ -7,25 +7,27 @@ import {
 
 export class UserController {
   static async getUsers(req: Request, res: Response) {
-    const users = await UserService.getAllUsers();
+    try {
+      const users = await UserService.getAllUsers();
 
-    if (!users) {
-      res.status(200).json({ message: "Users Not Found!" });
-      return;
+      res
+        .status(200)
+        .json({ message: "Users Found Successfully!", data: users });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
     }
-
-    res.status(200).json({ message: "Users Found Successfully!", data: users });
   }
 
   static async getUser(req: Request, res: Response) {
-    const users = await UserService.getUserById(req.params.id);
+    try {
+      const users = await UserService.getUserById(req.params.id);
 
-    if (!users) {
-      res.status(200).json({ message: "User Not Found!" });
-      return;
+      res
+        .status(200)
+        .json({ message: "User Found Successfully!", data: users });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
     }
-
-    res.status(200).json({ message: "User Found Successfully!", data: users });
   }
 
   static async register(req: Request, res: Response) {
@@ -54,7 +56,7 @@ export class UserController {
 
   static async update(req: Request, res: Response) {
     try {
-      await UserService.updateUser(req.body, req.auth);
+      await UserService.updateUser(req.body, req.auth?.userId);
 
       res.status(200).json({ message: "User Updated Successfully!" });
     } catch (error: any) {
@@ -64,7 +66,7 @@ export class UserController {
 
   static async delete(req: Request, res: Response) {
     try {
-      await UserService.deleteUser(req.auth);
+      await UserService.deleteUser(req.auth?.userId);
 
       res.status(200).json({ message: "User Deleted Successfully!" });
     } catch (error: any) {
