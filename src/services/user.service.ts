@@ -20,7 +20,7 @@ export interface UpdateUserData {
   newPassword: string;
 }
 
-interface AuthInterface {
+export interface AuthInterface {
   userId: string;
   role: Role;
 }

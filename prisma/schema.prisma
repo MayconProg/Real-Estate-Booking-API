@@ -25,6 +25,11 @@ enum Status {
   CANCELLED
 }
 
+enum PropertyType {
+  HOUSE
+  APARTMENT
+}
+
 model User {
   id       String     @id @default(uuid())
   name     String
@@ -39,16 +44,32 @@ model User {
 }
 
 model Property {
-  id          String     @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String
   price       String
-  address     String
-  ownerId     String
-  owner       User       @relation(fields: [ownerId], references: [id])
-  Schedule    Schedule[]
+  type        PropertyType
+
+  address Address?
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  Schedule Schedule[]
 
   @@map("properties")
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  country    String
+  state      String
+  city       String
+  street     String
+  number     String
+  zipcode    String
+  propertyId String   @unique
+  Property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 }
 
 model Schedule {
