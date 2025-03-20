@@ -1,4 +1,4 @@
-import { Role, Status } from "@prisma/client";
+import { ScheduleStatus } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 
 interface CreateScheduleData {
@@ -9,7 +9,7 @@ interface CreateScheduleData {
 interface UpdateScheduleData {
   startTime?: string;
   endTime?: string;
-  status?: Status;
+  status?: ScheduleStatus;
 }
 
 export class ScheduleService {

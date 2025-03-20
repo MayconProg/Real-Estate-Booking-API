@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../lib/prisma";
-import { Role } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
 export interface CreateUserData {
   name: string;
   email: string;
   password: string;
-  role: Role;
+  role: UserRole;
 }
 
 export interface UserLoginData {
@@ -106,10 +106,12 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { password: hashedPassword },
     });
+
+    return updatedUser;
   }
 
   static async deleteUser(userId?: string) {

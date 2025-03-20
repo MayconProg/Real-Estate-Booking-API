@@ -1,10 +1,10 @@
-import { Role } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 
 export const authorize =
-  (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
+  (roles: UserRole[]) => (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userRole = req.auth?.role as Role;
+      const userRole = req.auth?.role as UserRole;
 
       if (!roles.includes(userRole)) {
         res.status(403).json({

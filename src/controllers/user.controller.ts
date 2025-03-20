@@ -56,9 +56,14 @@ export class UserController {
 
   static async update(req: Request, res: Response) {
     try {
-      await UserService.updateUser(req.body, req.auth?.userId);
+      const updatedUser = await UserService.updateUser(
+        req.body,
+        req.auth?.userId
+      );
 
-      res.status(200).json({ message: "User Updated Successfully!" });
+      res
+        .status(200)
+        .json({ message: "User Updated Successfully!", data: updatedUser });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }

@@ -1,4 +1,4 @@
-import { Status } from "@prisma/client";
+import { ScheduleStatus } from "@prisma/client";
 import z from "zod";
 
 export const getScheduleByIdSchema = z.object({
@@ -33,7 +33,7 @@ export const updateScheduleSchema = z.object({
         .datetime({ message: "endTime Must To Be Datetime Type!" })
         .optional(),
       status: z
-        .nativeEnum(Status, { message: "Invalid Status Type!" })
+        .nativeEnum(ScheduleStatus, { message: "Invalid Status Type!" })
         .optional(),
     })
     .refine((data) => Object.keys(data).length > 0, {

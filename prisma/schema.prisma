@@ -13,13 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
+enum UserRole {
   ADMIN
   OWNER
   USER
 }
 
-enum Status {
+enum ScheduleStatus {
+  FINISHED
   CONFIRMED
   PENDING
   CANCELLED
@@ -35,7 +36,7 @@ model User {
   name     String
   email    String     @unique
   password String
-  role     Role       @default(USER)
+  role     UserRole   @default(USER)
   createAt DateTime   @default(now())
   Property Property[]
   Schedule Schedule[]
@@ -73,10 +74,10 @@ model Address {
 }
 
 model Schedule {
-  id        String   @id @default(uuid())
+  id        String         @id @default(uuid())
   startTime DateTime
   endTime   DateTime
-  status    Status   @default(PENDING)
+  status    ScheduleStatus @default(PENDING)
 
   userId     String
   propertyId String
