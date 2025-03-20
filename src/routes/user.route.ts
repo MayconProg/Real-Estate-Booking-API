@@ -14,7 +14,7 @@ const router = Router();
 router.get("/", UserController.getUsers);
 router.get("/:id", validate(getUserByIdSchema), UserController.getUser);
 router.post("/register", validate(createUserSchema), UserController.register);
-router.post("/user-login", validate(userLoginSchema), UserController.login);
+router.post("/login", validate(userLoginSchema), UserController.login);
 router.put(
   "/update-user",
   authenticate(),
