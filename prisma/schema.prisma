@@ -53,7 +53,7 @@ model Property {
   address Address?
 
   ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id])
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   Schedule Schedule[]
 
@@ -80,8 +80,8 @@ model Schedule {
 
   userId     String
   propertyId String
-  user       User     @relation(fields: [userId], references: [id])
-  Property   Property @relation(fields: [propertyId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@map("schedules")
 }
